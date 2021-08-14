@@ -1,8 +1,15 @@
 import NextAuth from "next-auth";
-import User from "../../../models/User";
+import Providers from "next-auth/providers";
+import User from "../../../models/userschema";
 import dbConnect from "../../../middleware/database";
 
 export default NextAuth({
+  providers: [
+    Providers.Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+  ],
   callbacks: {
     signIn: async (user, account, profile) => {
       const { name, email } = user;
@@ -42,7 +49,7 @@ export default NextAuth({
   },
 
   // Enable debug messages in the console if you are having problems
-  debug: true,
+  debug: false,
 
   // A database is optional, but required to persist accounts in a database
   //   database: process.env.DATABASE_URL,
